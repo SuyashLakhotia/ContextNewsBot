@@ -18,7 +18,15 @@ def get_relevant_news(tweet, tweet_keywords, tweet_salience, news_articles, thre
             relevant_news_articles.append(item)
 
     relevant_news_articles.sort(key=lambda x: x['relevance_score'], reverse=True)
-    return relevant_news_articles[:3]
+
+    final_articles = []
+    sources_covered = []
+    for item in relevant_news_articles:
+        if item["source"]["id"] not in sources_covered:
+            final_articles.append(item)
+            sources_covered.append(item["source"]["id"])
+
+    return final_articles[:3]
 
 
 def relevance_score_google(tweet, tweet_keywords, tweet_salience, news_item):
