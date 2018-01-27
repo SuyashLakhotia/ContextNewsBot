@@ -16,7 +16,7 @@ class NewsArticlesRetriever:
                                                      sort_by='relevancy')
         status = response['status']
         if status != 'ok':
-            print('Retrieved!')
+            print('Not Retrieved!')
         self.articles = response['articles']
         return self.articles
 
