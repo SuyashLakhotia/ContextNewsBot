@@ -1,0 +1,7 @@
+certifi==2018.1.18
+chardet==3.0.4
+idna==2.6
+ParallelDots==1.0.21
+requests==2.18.4
+urllib3==1.22
+wincertstore==0.2
