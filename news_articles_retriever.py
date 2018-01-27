@@ -16,14 +16,14 @@ class NewsArticlesRetriever:
                                           sort_by='relevancy')
         status = response['status']
         if status != 'ok':
-            print('shizz')
+            print('Retrived!')
         self.articles = response['articles']
         return self.articles
 
 
 def pretty_print_news(articles=[]):
     for item in articles:
-        print(item['title'] + ' - ' + item['description'] + '\n')
+        print('\n---\n' + item['relevance_score'] + ' - ' + item['title'] + ' - ' + item['description'] + '\n---\n')
 
 
 if __name__=='__main__':

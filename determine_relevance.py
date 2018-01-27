@@ -30,11 +30,13 @@ class RelevanceDeterminer:
         # TODO depends on structure of news_item and API response
         
         if key == "paralleldots":
+            # direct semantic similarity
             paralleldots.set_api_key("siQChQ9PVPRs8Gm0HDawsqscverucbEq77zNBZpNXI8")
             api_response = paralleldots.similarity(tweet, news_item)
             return api_response['normalized_score']
 
         elif key == "dandelion":
+            # semantic + syntactic similarity score
             base_url = "https://api.dandelion.eu/datatxt/sim/v1/"
             text1 = tweet.replace(" ", "%20")
             text2 = news_item.replace(" ", "%20")
@@ -49,7 +51,9 @@ class RelevanceDeterminer:
             semantic_score = api_response_semantic['similarity']
             syntactic_score = api_response_syntactic['similarity']
 
+            # TODO decision tree kind of model? But API calls are expensive!
             if syntactic_score >= 0.5:
+                # TODO figure out syntactic similarity threshold
                 return semantic_score
             else:
                 return -1
