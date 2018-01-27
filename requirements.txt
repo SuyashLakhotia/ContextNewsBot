@@ -24,3 +24,6 @@ Jinja2==2.7.3
 Werkzeug==0.10.4
 itsdangerous==0.24
 wsgiref==0.1.2
+nltk==3.2.5
+gensim==3.2.0
+spacy==2.0.5
