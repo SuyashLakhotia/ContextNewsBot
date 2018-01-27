@@ -62,8 +62,8 @@ class TweetProcessor(object):
         entities = self.google_lang.get_entities(text)
         for entity in entities:
             print('Entity: {}'.format(entity.name))
-            print('Salience: {}'.format(entity.salience))
             print('Type: {}'.format(ENTITY_TYPES[entity.type]))
+            print('Salience: {}'.format(entity.salience))
             names.append(entity.name)
             salience.append(entity.salience)
 
