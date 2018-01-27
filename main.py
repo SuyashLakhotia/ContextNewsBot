@@ -1,17 +1,14 @@
-from tweet_processor import TweetProcessor
-from determine_relevance import RelevanceDeterminer
-from news_articles_retriever import NewsArticlesRetriever, pretty_print_news
+from twitter_utils import TweetProcessor
+from news_utils import NewsRetriever, pretty_print_news
+from determine_relevance import get_relevant_news
 
-tp = TweetProcessor()
-RelevanceDeterminer = RelevanceDeterminer(0)  # TODO: fix threshold
-news_articles_retriever = NewsArticlesRetriever()
+tweet_processor = TweetProcessor()
+news_retriever = NewsRetriever()
 
-tweet, tweet_keywords = tp.extract_keywords(956956487225667584)
-# print(tp.extract_keywords(956938973326098432))
-# print(tp.extract_keywords(956937916374138880))
+tweet, tweet_entities, tweet_salience = tweet_processor.extract_entities(957267527649783808)
 
-news_articles = news_articles_retriever.get_articles(tweet_keywords)
+news_articles = news_retriever.get_articles(tweet_entities)
 
-relevant_articles = RelevanceDeterminer.get_relevant_news(tweet, news_articles)
+relevant_articles = get_relevant_news(tweet, tweet_entities, tweet_salience, news_articles, 0)
 
 pretty_print_news(relevant_articles)

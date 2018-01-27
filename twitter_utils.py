@@ -1,20 +1,27 @@
 import requests
 import base64
-
-from google.cloud import language
-from google.cloud.language import types
+import html
 
 import credentials
+from google_language import GoogleLanguage
 
 
 class TweetProcessor(object):
 
     def __init__(self):
+        self.base_url = 'https://api.twitter.com/'
+
+        access_token = self._authorize_twitter()
+        self.query_headers = {
+            'Authorization': 'Bearer {}'.format(access_token)
+        }
+
+        self.google_lang = GoogleLanguage()
+
+    def _authorize_twitter(self):
         key_secret = '{}:{}'.format(credentials.TWITTER_API_KEY,
                                     credentials.TWITTER_API_SECRET).encode('ascii')
         b64_encoded_key = base64.b64encode(key_secret).decode('ascii')
-
-        self.base_url = 'https://api.twitter.com/'
 
         auth_url = '{}oauth2/token'.format(self.base_url)
         auth_headers = {
@@ -26,43 +33,35 @@ class TweetProcessor(object):
         }
         auth_resp = requests.post(auth_url, headers=auth_headers, data=auth_data)
         assert auth_resp.status_code == 200
+        return auth_resp.json()['access_token']
 
-        access_token = auth_resp.json()['access_token']
-        self.query_headers = {
-            'Authorization': 'Bearer {}'.format(access_token)
-        }
+    def extract_entities(self, tweet_id):
+        # TODO: Remove links & emojis.
+        text = html.unescape(self.get_text(tweet_id))
 
-    def extract_keywords(self, tweet_id):
-        text = self.get_text(tweet_id)
-        keywords = []
-
+        names = []
+        salience = []
         print('Text: {}'.format(text))
-        document = types.Document(content=text,
-                                  type='PLAIN_TEXT')
-
-        client = language.LanguageServiceClient()
 
         if False:
-            sentiment = client.analyze_sentiment(document=document,
-                                                 encoding_type='UTF32').document_sentiment
+            sentiment = self.google_lang.get_sentiment(text)
             print('Sentiment: {}, {}'.format(sentiment.score,
                                              sentiment.magnitude))
 
         if False:
-            response = client.analyze_entity_sentiment(document=document,
-                                                       encoding_type='UTF32')
-            for entity in response.entities:
+            entities = self.google_lang.get_entities_sentiment(text)
+            for entity in entities:
                 print('Entity: {}'.format(entity.name))
                 print('Sentiment: {}'.format(entity.sentiment.score, entity.sentiment.magnitude))
 
-        if True:
-            response = client.analyze_entities(document=document,
-                                               encoding_type='UTF32')
-            for entity in response.entities:
-                print('Entity: {}'.format(entity.name))
-                keywords.append(entity.name)
+        entities = self.google_lang.get_entities(text)
+        for entity in entities:
+            print('Entity: {}'.format(entity.name))
+            print('Salience: {}'.format(entity.salience))
+            names.append(entity.name)
+            salience.append(entity.salience)
 
-        return text, keywords
+        return text, names, salience
 
     def get_text(self, tweet_id):
         query_params = {

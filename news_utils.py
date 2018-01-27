@@ -1,19 +1,19 @@
 from newsapi import NewsApiClient
 
 
-class NewsArticlesRetriever:
+class NewsRetriever:
 
     def __init__(self):
         self.newsapiClient = NewsApiClient(api_key='0ff1cf9e1766451c8ed9c5825d57df45')
-        self.list_of_sources = 'google-news'
+        self.list_of_sources = 'google-news,bbc-news,fox-news,cnn,the-new-york-times,the-times-of-india'
         self.articles = []
 
     def get_articles(self, phrases=''):
         response = self.newsapiClient.get_everything(q=phrases,
                                                      sources=self.list_of_sources,
-                                                     from_parameter='2017-12-01',
                                                      language='en',
-                                                     sort_by='relevancy')
+                                                     sort_by='relevancy',
+                                                     page_size=10)
         status = response['status']
         if status != 'ok':
             print('Retrieved!')
@@ -22,10 +22,7 @@ class NewsArticlesRetriever:
 
 
 def pretty_print_news(articles=[]):
-    for item in articles:
-        print('\n---\n' + str(item['relevance_score']) + ' - ' +
-              item['title'] + ' - ' + item['description'] + '\n---\n')
-
-
-if __name__ == '__main__':
-    print(getArticles('Trump Global Warming'))
+    for i in range(len(articles)):
+        item = articles[i]
+        print('\n---\n' + str(i) + '. ' + str(item['relevance_score']) + ' - ' +
+              str(item['source']['name']) + ' - ' + item['title'] + ' - ' + item['description'] + '\n---\n')
