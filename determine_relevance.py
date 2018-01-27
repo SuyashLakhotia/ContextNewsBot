@@ -2,6 +2,7 @@ import requests
 
 import paralleldots
 from google_language import GoogleLanguage
+from google_language import REALLY_IMP_ENTITY_IDX
 
 from news_utils import pretty_print_news
 
@@ -34,7 +35,11 @@ def relevance_score_google(tweet, tweet_keywords, tweet_salience, news_item):
     for i in range(len(tweet_keywords)):
         if tweet_keywords[i] in news_keywords:
             idx = news_keywords.index(tweet_keywords[i])
-            total_score += 1 * news_salience[idx]
+
+            if entities[idx].type in REALLY_IMP_ENTITY_IDX:
+                total_score += (news_salience[idx] * 1.5) * min(3, len(entities[idx].mentions))
+            else:
+                total_score += news_salience[idx] * min(3, len(entities[idx].mentions))
 
     normalized_score = total_score / sum(tweet_salience)
 

@@ -5,6 +5,7 @@ import re
 
 import credentials
 from google_language import GoogleLanguage
+from google_language import ENTITY_TYPES
 
 
 class TweetProcessor(object):
@@ -62,6 +63,7 @@ class TweetProcessor(object):
         for entity in entities:
             print('Entity: {}'.format(entity.name))
             print('Salience: {}'.format(entity.salience))
+            print('Type: {}'.format(ENTITY_TYPES[entity.type]))
             names.append(entity.name)
             salience.append(entity.salience)
 
