@@ -8,7 +8,7 @@ class RelevanceDeterminer:
     def __init__(self, threshold=3.5):
         self.threshold = threshold
 
-    def get_relevant_news(self, tweet, news_articles, key="paralleldots"):
+    def get_relevant_news(self, tweet, news_articles, key="dandelion"):
         """
         Args:
             tweet (str): Incoming tweet
@@ -22,11 +22,11 @@ class RelevanceDeterminer:
         for item in news_articles:
             relevance_score = self._relevance_score(tweet, item['title']+ ". " + item['description'])
             if relevance_score >= self.threshold:
-                # item["relevance_score"] = relevance_score
+                item["relevance_score"] = relevance_score
                 relevant_news_articles.append(item)
         return relevant_news_articles
 
-    def _relevance_score(self, tweet, news_item, key="paralleldots"):
+    def _relevance_score(self, tweet, news_item, key="dandelion"):
         # TODO depends on structure of news_item and API response
         
         if key == "paralleldots":

@@ -4,7 +4,7 @@ from newsapi import NewsApiClient
 class NewsArticlesRetriever:
     def __init__(self):
         self.newsapiClient = NewsApiClient(api_key='0ff1cf9e1766451c8ed9c5825d57df45')
-        self.list_of_sources = 'bbc-news,cnn'
+        self.list_of_sources = 'bbc-news,cnn,google-news'
         self.articles = []
 
     def get_articles(self, phrases=''):

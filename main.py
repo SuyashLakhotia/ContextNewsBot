@@ -6,7 +6,7 @@ tp = TweetProcessor()
 RelevanceDeterminer = RelevanceDeterminer(0)
 news_articles_retriever = NewsArticlesRetriever()
 
-tweet, tweet_keywords = tp.extract_keywords(956938973326098432)
+tweet, tweet_keywords = tp.extract_keywords(956956487225667584)
 # print(tp.extract_keywords(956938973326098432))
 # print(tp.extract_keywords(956937916374138880))
 
