@@ -24,7 +24,7 @@ class NewsRetriever:
                                                      sources=self.list_of_sources,
                                                      language='en',
                                                      sort_by='relevancy',
-                                                     page_size=15)
+                                                     page_size=10)
         status = response['status']
         if status != 'ok':
             print('Retrieved!')
