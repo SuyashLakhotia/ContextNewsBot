@@ -5,7 +5,7 @@ from determine_relevance import get_relevant_news
 tweet_processor = TweetProcessor()
 news_retriever = NewsRetriever()
 
-tweet = tweet_processor.get_tweet(956873004776116225)
+tweet = tweet_processor.get_tweet(957220637705109505)
 tweet_entities = tweet_processor.extract_entities(tweet)
 
 if tweet['user']['verified']:
