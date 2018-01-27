@@ -39,10 +39,16 @@ class TweetProcessor(object):
 
     def extract_entities(self, tweet):
         text = tweet['full_text']
-        text = html.unescape(text)  # unescape html text
-        text = re.sub(r'(https|http)?:\/\/(\w|\.|\/|\?|\=|\&|\%)*\b', '', text)  # remove links
-        re.sub(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF]+',
-               '', text)  # remove emoji
+        # unescape html text
+        text = html.unescape(text)
+        # remove links
+        text = re.sub(r'(https|http)?:\/\/(\w|\.|\/|\?|\=|\&|\%)*\b', '', text)
+        # remove hashtags
+        text = re.sub(r'#[A-Za-z]+', '', text)
+        # remove irrelevant characters
+        text = re.sub(r'[^a-zA-Z0-9.,?!/$&\'":-_\n\s]', '', text)
+        # remove repeated whitespaces
+        text = re.sub(r"\s{2,}", " ", text)
 
         names = []
         salience = []
