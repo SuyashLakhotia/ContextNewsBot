@@ -12,11 +12,12 @@ def get_relevant_news(tweet, tweet_keywords, tweet_salience, news_articles, thre
     for item in news_articles:
         relevance_score = relevance_score_google(tweet, tweet_keywords, tweet_salience,
                                                  item['title'] + ". " + item['description'])
+        item["relevance_score"] = relevance_score
         if relevance_score >= threshold:
-            item["relevance_score"] = relevance_score
             relevant_news_articles.append(item)
 
-    return relevant_news_articles
+    relevant_news_articles.sort(key=lambda x: x['relevance_score'], reverse=True)
+    return relevant_news_articles[:3]
 
 
 def relevance_score_google(tweet, tweet_keywords, tweet_salience, news_item):
