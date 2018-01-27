@@ -19,6 +19,7 @@ class GoogleLanguage(object):
                                   type=enums.Document.Type.PLAIN_TEXT)
         response = self.client.analyze_entities(document=document,
                                                 encoding_type=enums.EncodingType.UTF32)
+
         for entity in response.entities:
             if entity.mentions[0].type == enums.EntityMention.Type.COMMON:
                 entity.salience = entity.salience * 0.5
