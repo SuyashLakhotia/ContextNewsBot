@@ -1,13 +1,13 @@
 from newsapi import NewsApiClient
 
-class NewsArticlesRetriever:
 
+class NewsArticlesRetriever:
     def __init__(self):
         self.newsapiClient = NewsApiClient(api_key='0ff1cf9e1766451c8ed9c5825d57df45')
         self.list_of_sources = 'bbc-news,cnn'
         self.articles = []
 
-    def getArticles(self, phrases=''):
+    def get_articles(self, phrases=''):
         response = self.newsapiClient.get_everything(q=phrases,
                                           sources=self.list_of_sources,
                                           domains='bbc.co.uk',
@@ -20,12 +20,11 @@ class NewsArticlesRetriever:
         self.articles = response['articles']
         return self.articles
 
-    def pretty_print_news_titles(self, articles=[]):
-        titles = []
-        for item in articles:
-            titles.append(item['title'])
 
-        print(titles)
+def pretty_print_news(articles=[]):
+    for item in articles:
+        print(item['title'] + ' - ' + item['description'] + '\n')
+
 
 if __name__=='__main__':
     print(getArticles('Trump Global Warming'))

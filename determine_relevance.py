@@ -1,6 +1,6 @@
 import paralleldots
 
-from news_articles_retriever import NewsArticlesRetriever
+from news_articles_retriever import NewsArticlesRetriever, pretty_print_news
 
 class RelevanceDeterminer:
     def __init__(self, threshold=3.5):
@@ -30,12 +30,12 @@ class RelevanceDeterminer:
 
 
 if __name__ == '__main__':
-    RelevanceDeterminer = RelevanceDeterminer(3.5)
+    RelevanceDeterminer = RelevanceDeterminer(0)
 
-    tweet = "Donald Trump is correct about global warming. Total farce."
+    tweet = "All terrorists are Muslim"
 
     news_articles_retriever = NewsArticlesRetriever()
-    news_articles = news_articles_retriever.getArticles('Trump Global Warming')
+    news_articles = news_articles_retriever.get_articles(tweet)
     # news_set = [
     #             "Prime Minister Modi gives very good speeches.", 
     #             "Global warming is scientifically true. Researchers have found evidence.", 
@@ -44,4 +44,4 @@ if __name__ == '__main__':
 
     relevant_articles = RelevanceDeterminer.get_relevant_news(tweet, news_articles)
     
-    print(news_articles_retriever.pretty_print_news_titles(relevant_articles))
+    pretty_print_news(relevant_articles)
