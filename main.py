@@ -6,7 +6,7 @@ tweet_processor = TweetProcessor()
 news_retriever = NewsRetriever()
 
 tweet = tweet_processor.get_tweet(956873004776116225)
-tweet_entities, entity_names, entity_salience = tweet_processor.extract_entities(tweet)
+tweet_entities = tweet_processor.extract_entities(tweet)
 
 if tweet['user']['verified']:
     user_name = tweet['user']['name']
@@ -20,6 +20,6 @@ else:
 
 news_articles = news_retriever.get_articles(tweet_entities, country, user_name)
 
-relevant_articles = get_relevant_news(tweet, entity_names, entity_salience, news_articles, 0)
+relevant_articles = get_relevant_news(tweet, tweet_entities, news_articles, 0)
 
 pretty_print_news(relevant_articles)

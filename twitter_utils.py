@@ -50,8 +50,6 @@ class TweetProcessor(object):
         # remove repeated whitespaces
         text = re.sub(r"\s{2,}", " ", text)
 
-        names = []
-        salience = []
         print('Text: {}'.format(text))
 
         if False:
@@ -70,10 +68,8 @@ class TweetProcessor(object):
             print('Entity: {}'.format(entity.name))
             print('Type: {}'.format(ENTITY_TYPES[entity.type]))
             print('Salience: {}'.format(entity.salience))
-            names.append(entity.name)
-            salience.append(entity.salience)
 
-        return entities, names, salience
+        return entities
 
     def get_tweet(self, tweet_id):
         query_params = {

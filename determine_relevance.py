@@ -7,11 +7,11 @@ from google_language import REALLY_IMP_ENTITY_IDX
 from news_utils import pretty_print_news
 
 
-def get_relevant_news(tweet, tweet_keywords, tweet_salience, news_articles, threshold):
+def get_relevant_news(tweet, tweet_entities, news_articles, threshold):
     relevant_news_articles = []
 
     for item in news_articles:
-        relevance_score = relevance_score_google(tweet, tweet_keywords, tweet_salience,
+        relevance_score = relevance_score_google(tweet, tweet_entities,
                                                  item['title'] + ". " + item['description'])
         item["relevance_score"] = relevance_score
         if relevance_score >= threshold:
@@ -29,7 +29,7 @@ def get_relevant_news(tweet, tweet_keywords, tweet_salience, news_articles, thre
     return final_articles[:3]
 
 
-def relevance_score_google(tweet, tweet_keywords, tweet_salience, news_item):
+def relevance_score_google(tweet, tweet_entities, news_item):
     google_lang = GoogleLanguage()
     news_keywords = []
     news_salience = []
@@ -40,18 +40,16 @@ def relevance_score_google(tweet, tweet_keywords, tweet_salience, news_item):
         news_salience.append(entity.salience)
 
     total_score = 0
-    for i in range(len(tweet_keywords)):
-        if tweet_keywords[i] in news_keywords:
-            idx = news_keywords.index(tweet_keywords[i])
+    for i in range(len(tweet_entities)):
+        if tweet_entities[i].name in news_keywords:
+            idx = news_keywords.index(tweet_entities[i].name)
 
             if entities[idx].type in REALLY_IMP_ENTITY_IDX:
                 total_score += (news_salience[idx] * 1.5) * min(3, len(entities[idx].mentions))
             else:
                 total_score += news_salience[idx] * min(3, len(entities[idx].mentions))
 
-    normalized_score = total_score / sum(tweet_salience)
-
-    return normalized_score
+    return total_score
 
 
 def get_relevant_news_tfidf(tweet, news_articles, threshold=0.5):
