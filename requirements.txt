@@ -18,3 +18,6 @@ pyasn1-modules==0.2.1
 pytz==2017.3
 rsa==3.4.2
 six==1.11.0
+nltk==3.2.5
+gensim==3.2.0
+spacy==2.0.5
