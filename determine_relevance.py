@@ -29,13 +29,11 @@ class RelevanceDeterminer:
 
     def _relevance_score(self, tweet, news_item, key="dandelion"):
         # TODO: depends on structure of news_item and API response
-
         if key == "paralleldots":
             # direct semantic similarity
             paralleldots.set_api_key("siQChQ9PVPRs8Gm0HDawsqscverucbEq77zNBZpNXI8")
             api_response = paralleldots.similarity(tweet, news_item)
             return api_response['normalized_score']
-
         elif key == "dandelion":
             # semantic + syntactic similarity score
             base_url = "https://api.dandelion.eu/datatxt/sim/v1/"
