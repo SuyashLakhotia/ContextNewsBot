@@ -19,7 +19,9 @@ class RelevanceDeterminer:
         """
         relevant_news_articles = []
         for item in news_articles:
-            if self._relevance_score(tweet, item['title']+ " " + item['description']) >= self.threshold:
+            relevance_score = self._relevance_score(tweet, item['title']+ ". " + item['description'])
+            if relevance_score >= self.threshold:
+                # item["relevance_score"] = relevance_score
                 relevant_news_articles.append(item)
         return relevant_news_articles
 

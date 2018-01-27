@@ -1,0 +1,5 @@
+ENV/
+__pycache__/
+
+credentials.py
+service-account-file.json
