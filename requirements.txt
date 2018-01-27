@@ -18,3 +18,9 @@ pyasn1-modules==0.2.1
 pytz==2017.3
 rsa==3.4.2
 six==1.11.0
+Flask==0.10.1
+Flask-RESTful==0.3.2
+Jinja2==2.7.3
+Werkzeug==0.10.4
+itsdangerous==0.24
+wsgiref==0.1.2
