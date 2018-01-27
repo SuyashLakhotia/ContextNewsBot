@@ -6,7 +6,7 @@ class NewsRetriever:
 
     def __init__(self):
         self.newsapiClient = NewsApiClient(api_key='0ff1cf9e1766451c8ed9c5825d57df45')
-        self.list_of_sources = 'google-news,bbc-news,fox-news,cnn,the-new-york-times'
+        self.list_of_sources = 'buzzfeed,bbc-news,fox-news,cnn,the-new-york-times'
 
     def get_articles(self, entities, country=None, user_name=None):
         phrases = []
@@ -24,7 +24,7 @@ class NewsRetriever:
                                                      sources=self.list_of_sources,
                                                      language='en',
                                                      sort_by='relevancy',
-                                                     page_size=10)
+                                                     page_size=15)
         status = response['status']
         if status != 'ok':
             print('Retrieved!')
