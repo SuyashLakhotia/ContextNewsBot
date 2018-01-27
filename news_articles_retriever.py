@@ -23,7 +23,7 @@ class NewsArticlesRetriever:
 
 def pretty_print_news(articles=[]):
     for item in articles:
-        print('\n---\n' + item['relevance_score'] + ' - ' + item['title'] + ' - ' + item['description'] + '\n---\n')
+        print('\n---\n' + str(item['relevance_score']) + ' - ' + item['title'] + ' - ' + item['description'] + '\n---\n')
 
 
 if __name__=='__main__':
