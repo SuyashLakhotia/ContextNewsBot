@@ -3,6 +3,11 @@ from google.cloud.language import enums
 from google.cloud.language import types
 
 
+ENTITY_TYPES = ['UNKNOWN', 'PERSON', 'LOCATION', 'ORGANIZATION', 'EVENT', 'WORK_OF_ART', 'CONSUMER_GOOD',
+                'OTHER']
+IMP_ENTITY_IDX = [1, 2, 3, 4, 5, 6]
+
+
 class GoogleLanguage(object):
 
     def __init__(self):

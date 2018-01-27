@@ -5,10 +5,21 @@ from determine_relevance import get_relevant_news
 tweet_processor = TweetProcessor()
 news_retriever = NewsRetriever()
 
-tweet, tweet_entities, tweet_salience = tweet_processor.extract_entities(957267527649783808)
+tweet = tweet_processor.get_tweet(956873004776116225)
+tweet_entities, entity_names, entity_salience = tweet_processor.extract_entities(tweet)
 
-news_articles = news_retriever.get_articles(tweet_entities)
+if tweet['user']['verified']:
+    user_name = tweet['user']['name']
+else:
+    user_name = None
 
-relevant_articles = get_relevant_news(tweet, tweet_entities, tweet_salience, news_articles, 0)
+if tweet['place'] is not None:
+    country = tweet['place']['country']
+else:
+    country = None
+
+news_articles = news_retriever.get_articles(tweet_entities, country, user_name)
+
+relevant_articles = get_relevant_news(tweet, entity_names, entity_salience, news_articles, 0)
 
 pretty_print_news(relevant_articles)

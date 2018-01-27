@@ -1,6 +1,7 @@
 import requests
 import base64
 import html
+import re
 
 import credentials
 from google_language import GoogleLanguage
@@ -35,9 +36,11 @@ class TweetProcessor(object):
         assert auth_resp.status_code == 200
         return auth_resp.json()['access_token']
 
-    def extract_entities(self, tweet_id):
+    def extract_entities(self, tweet):
+        text = tweet['full_text']
+        text = html.unescape(text)
+        text = re.sub(r'(https|http)?:\/\/(\w|\.|\/|\?|\=|\&|\%)*\b', '', text)
         # TODO: Remove links & emojis.
-        text = html.unescape(self.get_text(tweet_id))
 
         names = []
         salience = []
@@ -61,9 +64,9 @@ class TweetProcessor(object):
             names.append(entity.name)
             salience.append(entity.salience)
 
-        return text, names, salience
+        return entities, names, salience
 
-    def get_text(self, tweet_id):
+    def get_tweet(self, tweet_id):
         query_params = {
             'id': tweet_id,
             'tweet_mode': 'extended'
@@ -71,4 +74,4 @@ class TweetProcessor(object):
         search_url = '{}1.1/statuses/show.json'.format(self.base_url)
         search_resp = requests.get(search_url, headers=self.query_headers, params=query_params)
         tweet_data = search_resp.json()
-        return tweet_data['full_text']
+        return tweet_data

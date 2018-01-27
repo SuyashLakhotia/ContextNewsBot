@@ -8,12 +8,14 @@ from news_utils import pretty_print_news
 
 def get_relevant_news(tweet, tweet_keywords, tweet_salience, news_articles, threshold):
     relevant_news_articles = []
+
     for item in news_articles:
         relevance_score = relevance_score_google(tweet, tweet_keywords, tweet_salience,
                                                  item['title'] + ". " + item['description'])
         if relevance_score >= threshold:
             item["relevance_score"] = relevance_score
             relevant_news_articles.append(item)
+
     return relevant_news_articles
 
 
@@ -44,20 +46,20 @@ def get_relevant_news_tfidf(tweet, news_articles, threshold=0.5):
     import gensim
     from nltk.tokenize import word_tokenize
 
-    news_articles_text = [item['title']+ ". " + item['description'] for item in news_articles]
-    news_articles_tokenized = [[w.lower() for w in word_tokenize(item)] 
-        for item in news_articles_text]
-    
+    news_articles_text = [item['title'] + ". " + item['description'] for item in news_articles]
+    news_articles_tokenized = [[w.lower() for w in word_tokenize(item)]
+                               for item in news_articles_text]
+
     dictionary = gensim.corpora.Dictionary(news_articles_tokenized)
     corpus = [dictionary.doc2bow(item_tokenized) for item_tokenized in news_articles_tokenized]
     tf_idf = gensim.models.TfidfModel(corpus)
-    sims = gensim.similarities.Similarity('',tf_idf[corpus],
-                                  num_features=len(dictionary))
+    sims = gensim.similarities.Similarity('', tf_idf[corpus],
+                                          num_features=len(dictionary))
 
     tweet_tokenized = [w.lower() for w in word_tokenize(tweet)]
     tweet_tokenized_bow = dictionary.doc2bow(tweet_tokenized)
     tweet_tokenized_tf_idf = tf_idf[tweet_tokenized_bow]
-    
+
     relevant_news_articles = []
     for idx, similarity_score in enumerate(sims[tweet_tokenized_tf_idf]):
         if similarity_score >= threshold:
@@ -71,8 +73,8 @@ def get_relevant_news_cosine(tweet, news_articles, threshold=0.5):
     """Directly returns relevant news
     """
     import spacy
-    nlp = spacy.load('en_core_web_sm') # need to download: python -m spacy download en_core_web_sm/_md/_lg
-    news_articles_vectors = [nlp(item['title']+ ". " + item['description']) for item in news_articles]
+    nlp = spacy.load('en_core_web_sm')  # need to download: python -m spacy download en_core_web_sm/_md/_lg
+    news_articles_vectors = [nlp(item['title'] + ". " + item['description']) for item in news_articles]
     tweet_vector = nlp(tweet)
 
     relevant_news_articles = []
