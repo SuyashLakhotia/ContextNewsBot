@@ -8,11 +8,12 @@ class RelevanceDeterminer:
     def __init__(self, threshold=3.5):
         self.threshold = threshold
 
-    def get_relevant_news(self, tweet, news_articles):
+    def get_relevant_news(self, tweet, news_articles, key="paralleldots"):
         """
         Args:
             tweet (str): Incoming tweet
             news_articles (List): Response of News Retriever
+            key (str): Relevance metric/selector
 
         Returns:
             relevant_news_articles (List): Filtered list of relevant news items.
@@ -45,7 +46,13 @@ class RelevanceDeterminer:
             url_syntactic = base_url + '?text1=' + text1 + '&text2=' + text2 + '&bow=always' + "&token=" + api_key
             api_response_syntactic = requests.post(url_semantic).json()
 
-            return [api_response_semantic['similarity'], api_response_syntactic['similarity']]
+            semantic_score = api_response_semantic['similarity']
+            syntactic_score = api_response_syntactic['similarity']
+
+            if syntactic_score >= 0.5:
+                return semantic_score
+            else:
+                return -1
 
 
 if __name__ == '__main__':
