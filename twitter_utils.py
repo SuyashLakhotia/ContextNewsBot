@@ -38,9 +38,10 @@ class TweetProcessor(object):
 
     def extract_entities(self, tweet):
         text = tweet['full_text']
-        text = html.unescape(text)
-        text = re.sub(r'(https|http)?:\/\/(\w|\.|\/|\?|\=|\&|\%)*\b', '', text)
-        # TODO: Remove links & emojis.
+        text = html.unescape(text)  # unescape html text
+        text = re.sub(r'(https|http)?:\/\/(\w|\.|\/|\?|\=|\&|\%)*\b', '', text)  # remove links
+        re.sub(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF]+',
+               '', text)  # remove emoji
 
         names = []
         salience = []
