@@ -47,8 +47,6 @@ def relevance_score_google(tweet, tweet_keywords, tweet_salience, news_item):
 
 
 def get_relevant_news_tfidf(tweet, news_articles, threshold=0.5):
-    """Directly returns relevant news
-    """
     import gensim
     from nltk.tokenize import word_tokenize
 
@@ -76,9 +74,8 @@ def get_relevant_news_tfidf(tweet, news_articles, threshold=0.5):
 
 
 def get_relevant_news_cosine(tweet, news_articles, threshold=0.5):
-    """Directly returns relevant news
-    """
     import spacy
+
     nlp = spacy.load('en_core_web_sm')  # need to download: python -m spacy download en_core_web_sm/_md/_lg
     news_articles_vectors = [nlp(item['title'] + ". " + item['description']) for item in news_articles]
     tweet_vector = nlp(tweet)
