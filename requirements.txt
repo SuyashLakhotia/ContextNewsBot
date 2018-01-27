@@ -5,3 +5,4 @@ ParallelDots==1.0.21
 requests==2.18.4
 urllib3==1.22
 wincertstore==0.2
+newsapi-python==0.0.2
