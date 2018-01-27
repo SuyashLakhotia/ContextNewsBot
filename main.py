@@ -12,6 +12,6 @@ tweet, tweet_keywords = tp.extract_keywords(956956487225667584)
 
 news_articles = news_articles_retriever.get_articles(tweet_keywords)
 
-relevant_articles = RelevanceDeterminer.get_relevant_news(tweet, news_articles)
+relevant_articles = RelevanceDeterminer.get_relevant_news(tweet, news_articles, key='paralleldots')
 
 pretty_print_news(relevant_articles)

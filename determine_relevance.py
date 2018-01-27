@@ -3,6 +3,8 @@ import requests
 
 from news_articles_retriever import NewsArticlesRetriever, pretty_print_news
 
+import time
+
 
 class RelevanceDeterminer:
     def __init__(self, threshold=3.5):
@@ -20,7 +22,9 @@ class RelevanceDeterminer:
         """
         relevant_news_articles = []
         for item in news_articles:
-            relevance_score = self._relevance_score(tweet, item['title']+ ". " + item['description'])
+            t = time.time()
+            relevance_score = self._relevance_score(tweet, item['title']+ ". " + item['description'], key)
+            print("relevence score-> ", time.time() - t)
             if relevance_score >= self.threshold:
                 item["relevance_score"] = relevance_score
                 relevant_news_articles.append(item)
