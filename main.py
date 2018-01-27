@@ -3,7 +3,7 @@ from determine_relevance import RelevanceDeterminer
 from news_articles_retriever import NewsArticlesRetriever, pretty_print_news
 
 tp = TweetProcessor()
-RelevanceDeterminer = RelevanceDeterminer(0) # TODO fix threshold
+RelevanceDeterminer = RelevanceDeterminer(0)  # TODO: fix threshold
 news_articles_retriever = NewsArticlesRetriever()
 
 tweet, tweet_keywords = tp.extract_keywords(956956487225667584)

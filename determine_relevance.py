@@ -5,6 +5,7 @@ from news_articles_retriever import NewsArticlesRetriever, pretty_print_news
 
 
 class RelevanceDeterminer:
+
     def __init__(self, threshold=3.5):
         self.threshold = threshold
 
@@ -20,15 +21,15 @@ class RelevanceDeterminer:
         """
         relevant_news_articles = []
         for item in news_articles:
-            relevance_score = self._relevance_score(tweet, item['title']+ ". " + item['description'])
+            relevance_score = self._relevance_score(tweet, item['title'] + ". " + item['description'])
             if relevance_score >= self.threshold:
                 item["relevance_score"] = relevance_score
                 relevant_news_articles.append(item)
         return relevant_news_articles
 
     def _relevance_score(self, tweet, news_item, key="dandelion"):
-        # TODO depends on structure of news_item and API response
-        
+        # TODO: depends on structure of news_item and API response
+
         if key == "paralleldots":
             # direct semantic similarity
             paralleldots.set_api_key("siQChQ9PVPRs8Gm0HDawsqscverucbEq77zNBZpNXI8")
@@ -51,9 +52,9 @@ class RelevanceDeterminer:
             semantic_score = api_response_semantic['similarity']
             syntactic_score = api_response_syntactic['similarity']
 
-            # TODO decision tree kind of model? But API calls are expensive!
+            # TODO: decision tree kind of model? But API calls are expensive!
             if syntactic_score >= 0.5:
-                # TODO figure out syntactic similarity threshold
+                # TODO: figure out syntactic similarity threshold
                 return semantic_score
             else:
                 return -1
@@ -67,11 +68,11 @@ if __name__ == '__main__':
     news_articles_retriever = NewsArticlesRetriever()
     news_articles = news_articles_retriever.get_articles(tweet)
     # news_set = [
-    #             "Prime Minister Modi gives very good speeches.", 
-    #             "Global warming is scientifically true. Researchers have found evidence.", 
+    #             "Prime Minister Modi gives very good speeches.",
+    #             "Global warming is scientifically true. Researchers have found evidence.",
     #             "Donald Trump lies about facts nine out of ten times."
     #             ]
 
     relevant_articles = RelevanceDeterminer.get_relevant_news(tweet, news_articles)
-    
+
     pretty_print_news(relevant_articles)
