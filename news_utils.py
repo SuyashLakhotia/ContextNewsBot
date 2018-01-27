@@ -5,7 +5,7 @@ class NewsRetriever:
 
     def __init__(self):
         self.newsapiClient = NewsApiClient(api_key='0ff1cf9e1766451c8ed9c5825d57df45')
-        self.list_of_sources = 'google-news,bbc-news,fox-news,cnn,the-new-york-times,the-times-of-india'
+        self.list_of_sources = 'google-news,bbc-news,fox-news,cnn,the-new-york-times'
         self.articles = []
 
     def get_articles(self, phrases=''):
