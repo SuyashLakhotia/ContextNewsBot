@@ -11,9 +11,10 @@ def get_relevant_news(tweet, tweet_entities, news_articles, threshold):
     relevant_news_articles = []
 
     for item in news_articles:
-        relevance_score = relevance_score_google(tweet, tweet_entities,
+        relevance_score, sentiment_score = relevance_score_google(tweet, tweet_entities,
                                                  item['title'] + ". " + item['description'])
         item["relevance_score"] = relevance_score
+        item["sentiment_score"] = sentiment_score
         if relevance_score >= threshold:
             relevant_news_articles.append(item)
 
@@ -33,13 +34,16 @@ def relevance_score_google(tweet, tweet_entities, news_item):
     google_lang = GoogleLanguage()
     news_keywords = []
     news_salience = []
+    news_sentiment = []
 
-    entities = google_lang.get_entities(news_item)
+    entities = google_lang.get_entities_sentiment(news_item)
     for entity in entities:
         news_keywords.append(entity.name)
         news_salience.append(entity.salience)
+        news_sentiment.append(entity.sentiment.score)
 
     total_score = 0
+    sentiment_score = 0
     for i in range(len(tweet_entities)):
         if tweet_entities[i].name in news_keywords:
             idx = news_keywords.index(tweet_entities[i].name)
@@ -49,7 +53,10 @@ def relevance_score_google(tweet, tweet_entities, news_item):
             else:
                 total_score += news_salience[idx] * min(3, len(entities[idx].mentions))
 
-    return total_score
+            # Sentiment score
+            sentiment_score += abs(news_sentiment[idx] + tweet_entities[i].sentiment.score)
+
+    return total_score, sentiment_score
 
 
 def get_relevant_news_tfidf(tweet, news_articles, threshold=0.5):

@@ -35,5 +35,5 @@ class NewsRetriever:
 def pretty_print_news(articles):
     for i in range(len(articles)):
         item = articles[i]
-        print('\n---\n' + str(i) + '. ' + str(item['relevance_score']) + ' - ' +
+        print('\n---\n' + str(i) + '. ' + str(item['relevance_score']) + ' - ' + str(item['sentiment_score']) + ' - ' +
               str(item['source']['name']) + ' - ' + item['title'] + ' - ' + item['description'] + '\n---\n')

@@ -57,17 +57,20 @@ class TweetProcessor(object):
             print('Sentiment: {}, {}'.format(sentiment.score,
                                              sentiment.magnitude))
 
-        if False:
+        if True:
             entities = self.google_lang.get_entities_sentiment(text)
             for entity in entities:
                 print('Entity: {}'.format(entity.name))
-                print('Sentiment: {}'.format(entity.sentiment.score, entity.sentiment.magnitude))
+                print('Type: {}'.format(ENTITY_TYPES[entity.type]))
+                print('Salience: {}'.format(entity.salience))
+                print('Sentiment: {}'.format(entity.sentiment.score))
 
-        entities = self.google_lang.get_entities(text)
-        for entity in entities:
-            print('Entity: {}'.format(entity.name))
-            print('Type: {}'.format(ENTITY_TYPES[entity.type]))
-            print('Salience: {}'.format(entity.salience))
+        if False:
+            entities = self.google_lang.get_entities(text)
+            for entity in entities:
+                print('Entity: {}'.format(entity.name))
+                print('Type: {}'.format(ENTITY_TYPES[entity.type]))
+                print('Salience: {}'.format(entity.salience))
 
         return entities
 
