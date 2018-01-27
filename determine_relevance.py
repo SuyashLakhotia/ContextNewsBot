@@ -33,7 +33,7 @@ def relevance_score_google(tweet, tweet_keywords, tweet_salience, news_item):
     for i in range(len(tweet_keywords)):
         if tweet_keywords[i] in news_keywords:
             idx = news_keywords.index(tweet_keywords[i])
-            total_score = 1 * news_salience[idx]
+            total_score += 1 * news_salience[idx]
 
     normalized_score = total_score / sum(tweet_salience)
 
