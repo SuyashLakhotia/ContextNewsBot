@@ -1,3 +1,5 @@
+# TODO: Make this compatible with everything else (especially new code structrue)
+
 from flask import Flask, jsonify, redirect, request
 from flask_restful import Api, Resource
 
@@ -9,11 +11,12 @@ app = Flask(__name__)
 APP_URL = "http://127.0.0.1:5000"
 
 tp = TweetProcessor()
-RelevanceDeterminer = RelevanceDeterminer(0) # TODO fix threshold
+RelevanceDeterminer = RelevanceDeterminer(0)
 news_articles_retriever = NewsArticlesRetriever()
 
 
 class Tweets(Resource):
+
     def post(self):
         data = request.get_json()
         if not data:
