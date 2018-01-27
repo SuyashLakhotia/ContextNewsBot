@@ -21,7 +21,7 @@ class RelevanceDeterminer:
         for item in news_articles:
             relevance_score = self._relevance_score(tweet, item['title']+ ". " + item['description'])
             if relevance_score >= self.threshold:
-                item["relevance_score"] = relevance_score
+                # item["relevance_score"] = relevance_score
                 relevant_news_articles.append(item)
         return relevant_news_articles
 
@@ -32,7 +32,7 @@ class RelevanceDeterminer:
 
 
 if __name__ == '__main__':
-    RelevanceDeterminer = RelevanceDeterminer(0)
+    RelevanceDeterminer = RelevanceDeterminer(0.2)
 
     tweet = "All terrorists are Muslim"
 

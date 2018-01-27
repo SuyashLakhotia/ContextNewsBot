@@ -62,7 +62,7 @@ class TweetProcessor(object):
                 print('Entity: {}'.format(entity.name))
                 keywords.append(entity.name)
 
-        return keywords
+        return text, keywords
 
     def get_text(self, tweet_id):
         query_params = {
