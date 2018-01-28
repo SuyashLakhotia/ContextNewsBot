@@ -26,8 +26,21 @@ def get_relevant_news(tweet, tweet_entities, news_articles, threshold):
             final_articles.append(item)
             sources_covered.append(item["source"]["id"])
 
-    return final_articles[:3]
+    google_lang = GoogleLanguage()
+    for item in final_articles[:3]:
+        news_item = item['title'] + ". " + item['description']
+        sentiment = google_lang.get_document_sentiment(news_item)
+        sentiment_score = sentiment.score
+        # if sentiment.score != 0:
+        #     sentiment_score = sentiment.score/abs(sentiment.score) * sentiment.magnitude
+        # else:
+        #     sentiment_score = 0
 
+        item["sentiment_score"] = sentiment_score
+    
+    pretty_print_news(final_articles[:3])
+
+    return final_articles[:3]
 
 def relevance_score_google(tweet, tweet_entities, news_item):
     google_lang = GoogleLanguage()
@@ -40,6 +53,7 @@ def relevance_score_google(tweet, tweet_entities, news_item):
         news_salience.append(entity.salience)
 
     total_score = 0
+
     for i in range(len(tweet_entities)):
         if tweet_entities[i].name in news_keywords:
             idx = news_keywords.index(tweet_entities[i].name)

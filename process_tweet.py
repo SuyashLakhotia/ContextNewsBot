@@ -1,6 +1,7 @@
 from twitter_utils import TweetProcessor
 from news_utils import NewsRetriever, pretty_print_news
 from determine_relevance import get_relevant_news
+from google_language import GoogleLanguage
 
 
 def process_tweet(tweetID):
@@ -24,4 +25,23 @@ def process_tweet(tweetID):
 
     relevant_articles = get_relevant_news(tweet, tweet_entities, news_articles, 0)
 
-    return relevant_articles
+    tweet_sentiment_score = get_tweet_sentiment(tweet["full_text"])
+
+    wiki_urls = get_wiki_links(tweet_entities)
+
+    response = {"relevant_articles": relevant_articles, "tweet_sentiment_score": tweet_sentiment_score, "wiki_urls": wiki_urls}
+
+    return response
+
+def get_tweet_sentiment(tweet):
+    google_lang = GoogleLanguage()
+    tweet_sentiment_score = google_lang.get_document_sentiment(tweet).score
+    return tweet_sentiment_score
+
+def get_wiki_links(tweet_entities):
+    wikipedia_urls = []
+    for entity in tweet_entities:
+        if entity.salience > 0.5 and "wikipedia_url" in entity.metadata.keys():
+            wikipedia_urls.append({entity.name: entity.metadata["wikipedia_url"]})
+
+    return wikipedia_urls
