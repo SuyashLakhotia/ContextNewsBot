@@ -43,5 +43,6 @@ def get_wiki_links(tweet_entities):
     for entity in tweet_entities:
         if entity.salience > 0.5 and "wikipedia_url" in entity.metadata.keys():
             wikipedia_urls.append({"entity_name": entity.name, "wiki_url": entity.metadata["wikipedia_url"]})
+            break
 
     return wikipedia_urls
