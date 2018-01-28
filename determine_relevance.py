@@ -1,6 +1,5 @@
 import requests
 
-import paralleldots
 from google_language import GoogleLanguage
 from google_language import REALLY_IMP_ENTITY_IDX
 
@@ -12,12 +11,12 @@ def get_relevant_news(tweet, tweet_entities, news_articles, threshold):
 
     for item in news_articles:
         relevance_score = relevance_score_google(tweet, tweet_entities,
-                                                 item['title'] + ". " + item['description'])
+                                                 item["title"] + ". " + item["description"])
         item["relevance_score"] = relevance_score
         if relevance_score >= threshold:
             relevant_news_articles.append(item)
 
-    relevant_news_articles.sort(key=lambda x: x['relevance_score'], reverse=True)
+    relevant_news_articles.sort(key=lambda x: x["relevance_score"], reverse=True)
 
     final_articles = []
     sources_covered = []
@@ -28,19 +27,14 @@ def get_relevant_news(tweet, tweet_entities, news_articles, threshold):
 
     google_lang = GoogleLanguage()
     for item in final_articles[:3]:
-        news_item = item['title'] + ". " + item['description']
+        news_item = item["title"] + ". " + item["description"]
         sentiment = google_lang.get_document_sentiment(news_item)
-        sentiment_score = sentiment.score
-        # if sentiment.score != 0:
-        #     sentiment_score = sentiment.score/abs(sentiment.score) * sentiment.magnitude
-        # else:
-        #     sentiment_score = 0
+        item["sentiment_score"] = sentiment.score
 
-        item["sentiment_score"] = sentiment_score
-    
     pretty_print_news(final_articles[:3])
 
     return final_articles[:3]
+
 
 def relevance_score_google(tweet, tweet_entities, news_item):
     google_lang = GoogleLanguage()
@@ -70,14 +64,14 @@ def get_relevant_news_tfidf(tweet, news_articles, threshold=0.5):
     import gensim
     from nltk.tokenize import word_tokenize
 
-    news_articles_text = [item['title'] + ". " + item['description'] for item in news_articles]
+    news_articles_text = [item["title"] + ". " + item["description"] for item in news_articles]
     news_articles_tokenized = [[w.lower() for w in word_tokenize(item)]
                                for item in news_articles_text]
 
     dictionary = gensim.corpora.Dictionary(news_articles_tokenized)
     corpus = [dictionary.doc2bow(item_tokenized) for item_tokenized in news_articles_tokenized]
     tf_idf = gensim.models.TfidfModel(corpus)
-    sims = gensim.similarities.Similarity('', tf_idf[corpus],
+    sims = gensim.similarities.Similarity("", tf_idf[corpus],
                                           num_features=len(dictionary))
 
     tweet_tokenized = [w.lower() for w in word_tokenize(tweet)]
@@ -96,8 +90,8 @@ def get_relevant_news_tfidf(tweet, news_articles, threshold=0.5):
 def get_relevant_news_cosine(tweet, news_articles, threshold=0.5):
     import spacy
 
-    nlp = spacy.load('en_core_web_sm')  # need to download: python -m spacy download en_core_web_sm/_md/_lg
-    news_articles_vectors = [nlp(item['title'] + ". " + item['description']) for item in news_articles]
+    nlp = spacy.load("en_core_web_sm")  # need to download: python -m spacy download en_core_web_sm/_md/_lg
+    news_articles_vectors = [nlp(item["title"] + ". " + item["description"]) for item in news_articles]
     tweet_vector = nlp(tweet)
 
     relevant_news_articles = []
@@ -108,34 +102,3 @@ def get_relevant_news_cosine(tweet, news_articles, threshold=0.5):
             relevant_news_articles.append(news_articles[idx])
 
     return relevant_news_articles
-
-
-def relevance_score(tweet, news_item, key):
-    # TODO: depends on structure of news_item and API response
-    if key == "paralleldots":
-        # direct semantic similarity
-        paralleldots.set_api_key("siQChQ9PVPRs8Gm0HDawsqscverucbEq77zNBZpNXI8")
-        api_response = paralleldots.similarity(tweet, news_item)
-        return api_response['normalized_score']
-    elif key == "dandelion":
-        # semantic + syntactic similarity score
-        base_url = "https://api.dandelion.eu/datatxt/sim/v1/"
-        text1 = tweet.replace(" ", "%20")
-        text2 = news_item.replace(" ", "%20")
-        api_key = "9e90047b495448adbab611edd14fae3e"
-
-        url_semantic = base_url + '?text1=' + text1 + '&text2=' + text2 + '&bow=never' + "&token=" + api_key
-        api_response_semantic = requests.post(url_semantic).json()
-
-        url_syntactic = base_url + '?text1=' + text1 + '&text2=' + text2 + '&bow=always' + "&token=" + api_key
-        api_response_syntactic = requests.post(url_semantic).json()
-
-        semantic_score = api_response_semantic['similarity']
-        syntactic_score = api_response_syntactic['similarity']
-
-        # TODO: decision tree kind of model? But API calls are expensive!
-        if syntactic_score >= 0.5:
-            # TODO: figure out syntactic similarity threshold
-            return semantic_score
-        else:
-            return -1

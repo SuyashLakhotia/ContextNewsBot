@@ -8,13 +8,13 @@ news_retriever = NewsRetriever()
 tweet = tweet_processor.get_tweet(957220637705109505)
 tweet_entities = tweet_processor.extract_entities(tweet)
 
-if tweet['user']['verified']:
-    user_name = tweet['user']['name']
+if tweet["user"]["verified"]:
+    user_name = tweet["user"]["name"]
 else:
     user_name = None
 
-if tweet['place'] is not None:
-    country = tweet['place']['country']
+if tweet["place"] is not None:
+    country = tweet["place"]["country"]
 else:
     country = None
 

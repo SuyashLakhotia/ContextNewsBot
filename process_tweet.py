@@ -11,13 +11,13 @@ def process_tweet(tweetID):
     tweet = tweet_processor.get_tweet(tweetID)
     tweet_entities = tweet_processor.extract_entities(tweet)
 
-    if tweet['user']['verified']:
-        user_name = tweet['user']['name']
+    if tweet["user"]["verified"]:
+        user_name = tweet["user"]["name"]
     else:
         user_name = None
 
-    if tweet['place'] is not None:
-        country = tweet['place']['country']
+    if tweet["place"] is not None:
+        country = tweet["place"]["country"]
     else:
         country = None
 
@@ -29,14 +29,17 @@ def process_tweet(tweetID):
 
     wiki_urls = get_wiki_links(tweet_entities)
 
-    response = {"relevant_articles": relevant_articles, "tweet_sentiment_score": tweet_sentiment_score, "wiki_urls": wiki_urls}
+    response = {"relevant_articles": relevant_articles,
+                "tweet_sentiment_score": tweet_sentiment_score, "wiki_urls": wiki_urls}
 
     return response
+
 
 def get_tweet_sentiment(tweet):
     google_lang = GoogleLanguage()
     tweet_sentiment_score = google_lang.get_document_sentiment(tweet).score
     return tweet_sentiment_score
+
 
 def get_wiki_links(tweet_entities):
     wikipedia_urls = []

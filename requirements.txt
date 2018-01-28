@@ -15,7 +15,6 @@ itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe==1.0
 newsapi-python==0.0.2
-ParallelDots==1.0.21
 protobuf==3.5.1
 pyasn1==0.4.2
 pyasn1-modules==0.2.1
