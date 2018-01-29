@@ -10,6 +10,10 @@ def process_tweet(tweetID):
 
     tweet = tweet_processor.get_tweet(tweetID)
     tweet_entities = tweet_processor.extract_entities(tweet)
+    tweet_sentiment_score = get_tweet_sentiment(tweet["full_text"])
+
+    if len(tweet_entities) == 0:
+        return {"relevant_articles": [], "tweet_sentiment_score": tweet_sentiment_score, "wiki_urls": []}
 
     if tweet["user"]["verified"]:
         user_name = tweet["user"]["name"]
@@ -22,15 +26,13 @@ def process_tweet(tweetID):
         country = None
 
     news_articles = news_retriever.get_articles(tweet_entities, country, user_name)
-
     relevant_articles = get_relevant_news(tweet, tweet_entities, news_articles, 0)
-
-    tweet_sentiment_score = get_tweet_sentiment(tweet["full_text"])
 
     wiki_urls = get_wiki_links(tweet_entities)
 
     response = {"relevant_articles": relevant_articles,
-                "tweet_sentiment_score": tweet_sentiment_score, "wiki_urls": wiki_urls}
+                "tweet_sentiment_score": tweet_sentiment_score,
+                "wiki_urls": wiki_urls}
 
     return response
 
