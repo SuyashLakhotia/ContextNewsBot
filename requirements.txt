@@ -12,7 +12,7 @@ googleapis-common-protos==1.5.3
 grpcio==1.8.4
 idna==2.6
 itsdangerous==0.24
-Jinja2==2.10
+Jinja2==2.11.3
 MarkupSafe==1.0
 newsapi-python==0.0.2
 protobuf==3.5.1
